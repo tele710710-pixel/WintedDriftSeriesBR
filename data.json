@@ -1,0 +1,11 @@
+{
+  "players": {
+    "Player1": {"rank": "5", "account": "2202201234567890", "car": "BMW M3 А123БС456", "stage1": 25, "stage2": 20, "total": 45},
+    "Player2": {"rank": "4", "account": "2202200987654321", "car": "Audi RS6 А987ЗВ654", "stage1": 18, "stage2": 20, "total": 38}
+  },
+  "stages": {
+    "stage1": {"Player1": 25, "Player2": 18},
+    "stage2": {"Player1": 20, "Player2": 20}
+  },
+  "total": {"Player1": 45, "Player2": 38}
+}
