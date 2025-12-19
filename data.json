@@ -1,5 +1,15 @@
 {
-  "players": {},
+  "players": {
+    "Max_Ykuza": {
+      "rank": "8",
+      "account": "123456",
+      "car": "Julia",
+      "plate": "K422TT",
+      "stage1": 0,
+      "stage2": 0,
+      "total": 0
+    }
+  },
   "stages": {
     "stage1": {},
     "stage2": {}
