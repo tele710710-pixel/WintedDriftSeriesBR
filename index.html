@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 ФСБ Black Russia</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);color:#fff;min-height:100vh;padding:20px;}
+        .container{max-width:500px;margin:0 auto;}
+        .header{text-align:center;margin-bottom:30px;padding:25px;background:rgba(255,255,255,0.1);border-radius:20px;backdrop-filter:blur(10px);}
+        .tabs{display:flex;justify-content:center;gap:10px;margin-bottom:25px;flex-wrap:wrap;}
+        .tab{padding:12px 24px;border-radius:25px;background:rgba(255,255,255,0.2);cursor:pointer;transition:all 0.3s;font-weight:500;}
+        .tab.active{background:linear-gradient(45deg,#00d4ff,#0099cc);box-shadow:0 8px 25px rgba(0,212,255,0.4);}
+        .section{background:rgba(255,255,255,0.1);border-radius:20px;padding:25px;margin-bottom:20px;backdrop-filter:blur(15px);display:none;}
+        .section.active{display:block;}
+        .section h3{margin-bottom:20px;font-size:1.4em;}
+        .table{width:100%;border-collapse:collapse;}
+        .table th,.table td{padding:15px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.2);}
+        .table th{font-weight:600;color:#00d4ff;text-transform:uppercase;font-size:0.85em;}
+        .medal{font-size:1.3em;font-weight:bold;}
+        .player-card{background:rgba(0,212,255,0.2);border-radius:15px;padding:20px;margin-bottom:15px;border:1px solid rgba(255,255,255,0.2);}
+        .player-nick{font-size:1.3em;font-weight:bold;margin-bottom:10px;}
+        .player-info{font-size:0.95em;opacity:0.9;line-height:1.5;}
+        .refresh-btn{width:100%;background:linear-gradient(45deg,#00d4ff,#0099cc);color:#fff;border:none;padding:18px;border-radius:25px;font-size:18px;font-weight:600;cursor:pointer;margin-top:20px;transition:all 0.3s;}
+        .refresh-btn:hover,.refresh-btn:active{transform:translateY(-3px);box-shadow:0 15px 35px rgba(0,212,255,0.5);}
+        .empty{text-align:center;color:#aaa;font-style:italic;padding:50px 20px;}
+        .rules-btn{background:linear-gradient(45deg,#ff6b6b,#ee5a52);color:#fff;border:none;padding:15px;border-radius:20px;font-size:16px;font-weight:600;cursor:pointer;width:100%;margin-top:15px;transition:all 0.3s;}
+        .rules-btn:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(255,107,107,0.4);}
+        .rules-section{padding:20px;text-align:center;}
+        .rules-link{color:#00d4ff;text-decoration:none;font-size:1.1em;font-weight:600;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🏆 ФСБ Black Russia</h1>
+        <p>Рейтинговые таблицы дрифт-турнира • 2 этапа</p>
+    </div>
+    
+    <div class="tabs">
+        <div class="tab active" data-tab="total">🏆 Итоговый зачёт</div>
+        <div class="tab" data-tab="stage1">📈 Этап 1</div>
+        <div class="tab" data-tab="stage2">📈 Этап 2</div>
+        <div class="tab" data-tab="players">👥 Участники</div>
+        <div class="tab" data-tab="rules">📜 Регламент</div>
+    </div>
+
+    <!-- Итоговый зачёт -->
+    <div id="total" class="section active">
+        <h3>🏆 ИТОГОВЫЙ ЗАЧЁТ</h3>
+        <table class="table">
+            <thead><tr><th>Место</th><th>Участник</th><th>Очки</th></tr></thead>
+            <tbody id="total-table"></tbody>
+        </table>
+    </div>
+
+    <!-- Этап 1 -->
+    <div id="stage1" class="section">
+        <h3>📈 РЕЗУЛЬТАТЫ ЭТАПА 1</h3>
+        <table class="table">
+            <thead><tr><th>Место</th><th>Участник</th><th>Очки</th></tr></thead>
+            <tbody id="stage1-table"></tbody>
+        </table>
+    </div>
+
+    <!-- Этап 2 -->
+    <div id="stage2" class="section">
+        <h3>📈 РЕЗУЛЬТАТЫ ЭТАПА 2</h3>
+        <table class="table">
+            <thead><tr><th>Место</th><th>Участник</th><th>Очки</th></tr></thead>
+            <tbody id="stage2-table"></tbody>
+        </table>
+    </div>
+
+    <!-- Участники -->
+    <div id="players" class="section">
+        <h3>👥 Все участники</h3>
+        <div id="players-list"></div>
+    </div>
+
+    <!-- ✅ НОВЫЙ РАЗДЕЛ РЕГЛАМЕНТ -->
+    <div id="rules" class="section">
+        <div class="rules-section">
+            <h3>📜 Регламент турнира</h3>
+            <p>Официальные правила дрифт-турнира ФСБ Black Russia</p>
+            <button class="rules-btn" onclick="openRules()">
+                📖 Открыть регламент
+            </button>
+            <p style="margin-top:15px;font-size:0.9em;opacity:0.8;">
+                Google Документ • Автообновление
+            </p>
+        </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadData()">🔄 Обновить данные</button>
+    <div style="text-align:center;margin-top:10px;font-size:12px;color:#aaa;">Автообновление каждые 30 сек</div>
+</div>
+
+<script>
+Telegram.WebApp.ready();Telegram.WebApp.expand();
+
+let lastUpdate = 0;
+
+// ✅ ФУНКЦИЯ ОТКРЫТИЯ РЕГЛАМЕНТА (замени URL на свой Google Docs!)
+function openRules() {
+    // ← ЗАМЕНИ НА СВОЮ ССЫЛКУ GOOGLE DOCS!
+    const rulesUrl = "https://1drv.ms/w/c/2cd64e63c91d7970/IQD6Nl6RnHrKQp9NQAdJXxjUAQ22oykYIKaMbuXWFYbcYZo?e=yBLMCm";
+    Telegram.WebApp.openLink(rulesUrl);
+    Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+        if(tab.dataset.tab !== 'rules') loadData(); // Не загружаем данные для регламента
+    });
+});
+
+async function loadData() {
+    const now = Date.now();
+    if(now - lastUpdate < 2000) return;
+    lastUpdate = now;
+    
+    const btn = document.querySelector('.refresh-btn');
+    btn.innerHTML = '⏳ Загрузка...';
+    
+    try {
+        const response = await fetch('data.json?' + now);
+        const data = await response.json();
+        updateTable('total-table', data.total || {});
+        updateTable('stage1-table', data.stages?.stage1 || {});
+        updateTable('stage2-table', data.stages?.stage2 || {});
+        updatePlayersList(data.players || {});
+        btn.innerHTML = `✅ Обновлено ${new Date().toLocaleTimeString('ru-RU')}`;
+        setTimeout(() => btn.innerHTML = '🔄 Обновить данные', 3000);
+        Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    } catch(e) {
+        console.error('Ошибка:', e);
+        btn.innerHTML = '❌ Ошибка сети';
+        setTimeout(() => btn.innerHTML = '🔄 Обновить данные', 2000);
+    }
+}
+
+function updateTable(tableId, data) {
+    const tbody = document.getElementById(tableId);
+    tbody.innerHTML = Object.keys(data).length ?
+        Object.entries(data).sort(([,a],[,b]) => b - a).slice(0,15).map(([nick, points], i) =>
+            `<tr><td><span class="medal">${i<3 ? '🥇🥈🥉'[i] : i+1 + '.'}</span></td><td><strong>${nick.replace('_', '\\_')}</strong></td><td><strong>${points}</strong></td></tr>`
+        ).join('') : 
+        '<tr><td colspan="3" class="empty">Нет данных</td></tr>';
+}
+
+function updatePlayersList(players) {
+    const container = document.getElementById('players-list');
+    container.innerHTML = Object.keys(players).length ?
+        Object.entries(players).sort(([,a],[,b]) => (b.total||0) - (a.total||0)).map(([nick, info]) =>
+            `<div class="player-card">
+                <div class="player-nick">${nick.replace('_', '_')}</div>
+                <div class="player-info">
+                    <div>🎖️ Ранг: <strong>${info.rank || '-'}</strong></div>
+                    <div>💳 Счёт: <strong>${info.account || '-'}</strong></div>
+                    <div>🚗 ${info.car || '-'} | 🏷️ <strong>${info.plate || '-'}</strong></div>
+                    <div>📊 Этап 1: ${info.stage1 || 0} | Этап 2: ${info.stage2 || 0} | <strong>Итог: ${info.total || 0}</strong></div>
+                </div>
+            </div>`
+        ).join('') : 
+        '<div class="empty">Участники не добавлены</div>';
+}
+
+setInterval(loadData, 30000);
+loadData();
+</script>
+</body>
+</html>
