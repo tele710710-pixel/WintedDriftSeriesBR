@@ -1,22 +1,8 @@
 {
-  "players": {
-    "Max_Ykuza": {
-      "rank": "8",
-      "account": "123456",
-      "car": "Julia",
-      "plate": "K422TT",
-      "stage1": 1,
-      "stage2": 0,
-      "total": 1
-    }
-  },
+  "players": {},
   "stages": {
-    "stage1": {
-      "Max_Ykuza": 1
-    },
+    "stage1": {},
     "stage2": {}
   },
-  "total": {
-    "Max_Ykuza": 1
-  }
+  "total": {}
 }
