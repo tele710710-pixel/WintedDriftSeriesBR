@@ -6,8 +6,8 @@
       "car": "Julia",
       "plate": "K422TT",
       "stage1": 1,
-      "stage2": 0,
-      "total": 1
+      "stage2": 2,
+      "total": 3
     },
     "Oleg_Platov": {
       "rank": "1",
@@ -23,9 +23,11 @@
     "stage1": {
       "Max_Ykuza": 1
     },
-    "stage2": {}
+    "stage2": {
+      "Max_Ykuza": 2
+    }
   },
   "total": {
-    "Max_Ykuza": 1
+    "Max_Ykuza": 3
   }
 }
