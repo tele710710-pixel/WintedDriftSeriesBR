@@ -14,9 +14,9 @@
       "account": "123321",
       "car": "Семерка",
       "plate": "o000oo",
-      "stage1": 0,
+      "stage1": 1,
       "stage2": 0,
-      "total": 0
+      "total": 1
     },
     "TEST_TEST": {
       "rank": "1",
@@ -30,13 +30,15 @@
   },
   "stages": {
     "stage1": {
-      "Max_Ykuza": 1
+      "Max_Ykuza": 1,
+      "Oleg_Platov": 1
     },
     "stage2": {
       "Max_Ykuza": 2
     }
   },
   "total": {
-    "Max_Ykuza": 3
+    "Max_Ykuza": 3,
+    "Oleg_Platov": 1
   }
 }
