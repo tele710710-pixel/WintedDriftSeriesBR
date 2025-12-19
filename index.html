@@ -149,10 +149,21 @@ async function loadData() {
 function updateTable(tableId, data) {
     const tbody = document.getElementById(tableId);
     tbody.innerHTML = Object.keys(data).length ?
-        Object.entries(data).sort(([,a],[,b]) => b - a).slice(0,15).map(([nick, points], i) =>
-            `<tr><td><span class="medal">${i<3 ? '🥇🥈🥉'[i] : i+1 + '.'}</span></td><td><strong>${nick.replace('_', '\\_')}</strong></td><td><strong>${points}</strong></td></tr>`
-        ).join('') : 
+        Object.entries(data).sort(([,a],[,b]) => b - a).slice(0,15).map(([nick, points], i) => {
+            // ✅ SVG МЕДАЛЬКИ вместо эмодзи!
+            const medal = i === 0 ? '🥇' : 
+                         i === 1 ? '🥈' : 
+                         i === 2 ? '🥉' : 
+                         `${i+1}.`;
+            
+            return `<tr>
+                <td><span class="medal">${medal}</span></td>
+                <td><strong>${nick.replace(/\\_/g, '_')}</strong></td>
+                <td><strong>${points}</strong></td>
+            </tr>`;
+        }).join('') : 
         '<tr><td colspan="3" class="empty">Нет данных</td></tr>';
+
 }
 
 function updatePlayersList(players) {
@@ -177,3 +188,4 @@ loadData();
 </script>
 </body>
 </html>
+
